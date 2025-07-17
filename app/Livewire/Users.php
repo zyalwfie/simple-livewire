@@ -7,17 +7,25 @@ use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Hash;
+use Livewire\WithFileUploads;
 
 class Users extends Component
 {
+    use WithFileUploads;
+
     public $title = 'User Component Data', $users;
 
     #[Validate('required|min:3|max:255')]
     public $name = '';
+
     #[Validate('required|email:dns|unique:users')]
     public $email = '';
+
     #[Validate('required|min:8')]
     public $password = '';
+
+    #[Validate('image|max:2048')]
+    public $avatar;
 
     public function __construct()
     {
@@ -32,9 +40,14 @@ class Users extends Component
         //     'password' => 'required|min:8'
         // ]);
 
-        $this->validate();
+        $validated = $this->validate();
+
+        if ($this->avatar) {
+            $validated['avatar'] = $this->avatar->store('img', 'public');
+        }
 
         User::create([
+            'avatar' => $validated['avatar'] ?? 'default-avatar.png',
             'name' => $this->name,
             'email' => $this->email,
             'email_verified_at' => now(),
