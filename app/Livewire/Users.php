@@ -9,11 +9,24 @@ use Illuminate\Support\Facades\Hash;
 
 class Users extends Component
 {
-    public $title = 'User Component Data', $users;
+    public $title = 'User Component Data', $users, $name = '', $email = '', $password = '';
 
     public function __construct()
     {
-        $this->users = User::all();
+        $this->users = User::latest()->get();
+    }
+
+    public function createNewUser()
+    {
+        User::create([
+            'name' => $this->name,
+            'email' => $this->email,
+            'email_verified_at' => now(),
+            'password' => Hash::make($this->password),
+            'remember_token' => Str::random(10),
+        ]);
+
+        $this->reset();
     }
 
     public function generateRandomUser()
