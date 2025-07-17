@@ -8,12 +8,14 @@ use Illuminate\Support\Str;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Hash;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Users extends Component
 {
+    use WithPagination;
     use WithFileUploads;
 
-    public $title = 'User Component Data', $users;
+    public $title = 'User Component Data';
 
     #[Validate('required|min:3|max:255')]
     public $name = '';
@@ -27,19 +29,8 @@ class Users extends Component
     #[Validate('image|max:2048')]
     public $avatar;
 
-    public function __construct()
-    {
-        $this->users = User::latest()->get();
-    }
-
     public function createNewUser()
     {
-        // $validated = $this->validate([
-        //     'name' => 'required|min:3|max:255',
-        //     'email' => 'required|email:dns|unique:users',
-        //     'password' => 'required|min:8'
-        // ]);
-
         $validated = $this->validate();
 
         if ($this->avatar) {
@@ -69,10 +60,15 @@ class Users extends Component
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
         ]);
+
+        $this->resetPage();
     }
 
     public function render()
     {
-        return view('livewire.users');
+        return view('livewire.users', [
+            'users' => User::latest()->paginate(5),
+            'userCount' => count(User::all())
+        ]);
     }
 }

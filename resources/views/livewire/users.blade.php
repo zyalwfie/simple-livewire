@@ -127,30 +127,32 @@
     </div>
 
     <div class="flex flex-col items-start gap-4 grow">
-        <h1 class="text-center text-3xl font-bold">Users List ({{ count($users) }})</h1>
+        <h2 class="text-center text-2xl/9 font-bold">Users List ({{ $userCount }})</h2>
         <button type="button" wire:click="generateRandomUser"
             class="px-4 py-2 rounded border border-gray-300 bg-gray-300 text-gray-800 transition hover:bg-gray-600 hover:text-gray-200 cursor-pointer">
             Generate random
         </button>
-        <ul class="flex flex-col items-start gap-4 max-h-70 overflow-auto">
+        <ul role="list" class="divide-y divide-gray-100 w-full">
             @foreach ($users as $user)
-                <li>
-                    <div class="flex items-center gap-2">
-                        <div>
-                            @if ($user->avatar)
-                                <img src="/storage/{{ $user->avatar }}" alt="{{ $user->name }}" width="50">
-                            @else
-                                <img src="{{ asset('img/default-avatar.png') }}" alt="{{ $user->name }}"
-                                    width="50">
-                            @endif
+                <li class="flex justify-between gap-x-6 py-5">
+                    <div class="flex min-w-0 gap-x-4">
+                        <img src="{{ asset('/storage/' . $user->avatar) }}" alt=""
+                            class="size-12 flex-none rounded-full bg-gray-50" />
+                        <div class="min-w-0 flex-auto">
+                            <p class="text-sm/6 font-semibold text-gray-900">{{ $user->name }}</p>
+                            <p class="mt-1 truncate text-xs/5 text-gray-500">{{ $user->email }}</p>
                         </div>
-                        <div class="flex flex-col">
-                            <span>{{ $user->name }}</span>
-                            <span>{{ $user->email }}</span>
-                        </div>
+                    </div>
+                    <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end self-center">
+                        <p class="mt-1 text-xs/5 text-gray-500">
+                            Joined {{ $user->created_at->diffForHumans() }}
+                        </p>
                     </div>
                 </li>
             @endforeach
         </ul>
+        <div class="w-full">
+            {{ $users->links() }}
+        </div>
     </div>
 </div>
