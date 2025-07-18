@@ -15,9 +15,9 @@
 </head>
 
 <body>
-    <div class="max-w-7xl h-screen flex items-center justify-center gap-16 mx-auto">
+    <div class="px-4 py-8 md:px-8 flex flex-col lg:flex-row gap-8 transition">
         @livewire('user-form')
-        @livewire('user-list')
+        @livewire('user-list', ['lazy' => true])
     </div>
 </body>
 

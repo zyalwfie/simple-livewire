@@ -1,17 +1,17 @@
-<div class="mb-8 grow">
+<div class="lg:w-1/2">
+    @if (session('success'))
+        <div class="mb-4 p-4 w-full text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+            role="alert">
+            <span class="font-medium">Success!</span>
+            {{ session('success') }}
+        </div>
+    @endif
     <div>
-        @if (session('success'))
-            <div class="p-4 w-full text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
-                role="alert">
-                <span class="font-medium">Success!</span>
-                {{ session('success') }}
-            </div>
-        @endif
-        <h2 class="mt-4 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Create New User</h2>
+        <h2 class="text-center text-2xl/9 font-bold tracking-tight text-gray-900">Create New User</h2>
     </div>
 
     <div class="mt-4">
-        <form wire:submit="createNewUser" action="#" method="POST" class="space-y-6">
+        <form wire:submit="createNewUser" action="#" method="POST" class="flex flex-col gap-4">
             <div>
                 <label for="name" class="block text-sm/6 font-medium text-gray-900">Name</label>
                 <div class="mt-2">

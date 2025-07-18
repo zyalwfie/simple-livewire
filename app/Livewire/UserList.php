@@ -41,12 +41,17 @@ class UserList extends Component
         $this->resetPage();
     }
 
+    public function placeholder(array $params = [])
+    {
+        return view('livewire.placeholders.skeleton-list', $params);
+    }
+
     public function render()
     {
         return view('livewire.user-list', [
             'users' => User::latest()
                 ->where('name', 'like', "%{$this->query}%")
-                ->paginate(5),
+                ->paginate(4),
             'userCount' => count(User::all())
         ]);
     }
