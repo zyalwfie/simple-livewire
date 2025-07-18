@@ -8,13 +8,13 @@ use Illuminate\Support\Str;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Hash;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 
 class UserList extends Component
 {
     use WithPagination, WithFileUploads;
 
-    public $title = 'User Component Data';
     public $query = '';
 
     #[On('user-created')]
@@ -46,13 +46,17 @@ class UserList extends Component
         return view('livewire.placeholders.skeleton-list', $params);
     }
 
-    public function render()
+    #[Computed()]
+    public function users()
     {
-        return view('livewire.user-list', [
-            'users' => User::latest()
-                ->where('name', 'like', "%{$this->query}%")
-                ->paginate(4),
-            'userCount' => count(User::all())
-        ]);
+        return User::latest()
+            ->where('name', 'like', "%{$this->query}%")
+            ->paginate(4);
+    }
+
+    #[Computed()]
+    public function userAmount()
+    {
+        return User::count();
     }
 }

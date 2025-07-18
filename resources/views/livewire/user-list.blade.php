@@ -1,5 +1,5 @@
 <div wire:poll.3s.keep-alive.visible class="flex flex-col items-start justify-start gap-4 lg:w-1/2 h-160">
-    <h2 class="text-center text-2xl/9 font-bold">Users List ({{ $userCount }})</h2>
+    <h2 class="text-center text-2xl/9 font-bold">Users List ({{ $this->userAmount }})</h2>
 
     <div class="flex flex-col gap-4 items-start w-full">
         <div class="grow w-full">
@@ -51,7 +51,7 @@
     </div>
 
     <ul role="list" class="divide-y divide-gray-100 w-full">
-        @foreach ($users as $user)
+        @foreach ($this->users as $user)
             <li class="flex justify-between gap-x-6 py-5">
                 <div class="flex min-w-0 gap-x-4">
                     <img src="{{ asset('/storage/' . $user->avatar) }}" alt=""
@@ -71,6 +71,6 @@
     </ul>
 
     <div class="w-full">
-        {{ $users->links() }}
+        {{ $this->users->links() }}
     </div>
 </div>
