@@ -5,18 +5,13 @@ namespace App\Livewire;
 use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Str;
+use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Hash;
-use Livewire\WithFileUploads;
-use Livewire\WithPagination;
 
-class Users extends Component
+class UserForm extends Component
 {
-    use WithPagination;
     use WithFileUploads;
-
-    public $title = 'User Component Data';
-    public $query = '';
 
     #[Validate('required|min:3|max:255')]
     public $name = '';
@@ -29,16 +24,6 @@ class Users extends Component
 
     #[Validate('image|max:2048')]
     public $avatar;
-
-    public function updatedQuery()
-    {
-        $this->resetPage();
-    }
-
-    public function search()
-    {
-        $this->resetPage();
-    }
 
     public function createNewUser()
     {
@@ -60,28 +45,12 @@ class Users extends Component
         $this->reset();
 
         session()->flash('success', 'New user has been created.');
-    }
 
-    public function generateRandomUser()
-    {
-        User::create([
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => Hash::make('password'),
-            'remember_token' => Str::random(10),
-        ]);
-
-        $this->resetPage();
+        $this->dispatch('user-created');
     }
 
     public function render()
     {
-        return view('livewire.users', [
-            'users' => User::latest()
-                ->where('name', 'like', "%{$this->query}%")
-                ->paginate(5),
-            'userCount' => count(User::all())
-        ]);
+        return view('livewire.user-form');
     }
 }

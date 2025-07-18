@@ -15,7 +15,10 @@
 </head>
 
 <body>
-    @livewire('users')
+    <div class="max-w-7xl h-screen flex items-center justify-center gap-16 mx-auto">
+        @livewire('user-form')
+        @livewire('user-list')
+    </div>
 </body>
 
 </html>
